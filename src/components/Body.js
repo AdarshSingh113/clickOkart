@@ -11,8 +11,8 @@ const Body = () => {
     const dispatch = useDispatch();
     const [searchText, setSearchText] = useState("");
     const [tempProductList, setTempProductList] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedPriceSegment, setSelectedPriceSegment] = useState("");
-
     const priceSegments = [
         { value: "", label: "All Prices" },
         { value: "under10", label: "Under $10" },
@@ -80,6 +80,21 @@ const Body = () => {
 
         setTempProductList(filteredProducts);
     };
+    const filterProductsByCategory = (category) => {
+        setSelectedCategory(category);
+        if (category === "") {
+            setTempProductList(productList);
+        } else {
+            const filteredProducts = productList.filter(
+                (product) => product.category === category
+            );
+            setTempProductList(filteredProducts);
+        }
+    };
+
+    const categories = [
+        ...new Set(productList.map((product) => product.category)),
+    ];
 
     return (
         <motion.div
@@ -89,7 +104,46 @@ const Body = () => {
             className="w-full"
         >
             <div className="flex items-center justify-between space-x-4 p-4">
-                {/* Search and filter elements */}
+                <div className="flex flex-grow">
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        className="border border-gray-300 rounded px-2 py-1 mx-2"
+                    />
+                    <button
+                        onClick={handleSearch}
+                        className="bg-blue-500 text-white px-3 py-1 rounded"
+                    >
+                        Search
+                    </button>
+                </div>
+                <select
+                    onChange={(e) => filterProductsByCategory(e.target.value)}
+                    value={selectedCategory}
+                    className="border border-gray-300 rounded px-2 py-1"
+                >
+                    <option value="">All Categories</option>
+                    {categories.map((category) => (
+                        <option key={category} value={category}>
+                            {category}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    onChange={(e) =>
+                        filterProductsByPriceSegment(e.target.value)
+                    }
+                    value={selectedPriceSegment}
+                    className="border border-gray-300 rounded px-2 py-1"
+                >
+                    {priceSegments.map((segment) => (
+                        <option key={segment.value} value={segment.value}>
+                            {segment.label}
+                        </option>
+                    ))}
+                </select>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
                 {tempProductList &&

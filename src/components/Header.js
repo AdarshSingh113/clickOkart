@@ -7,8 +7,8 @@ function Header() {
             <div>
                 <Link to="/">
                     <img
-                        className="h-12"
-                        src="https://www.passionateinmarketing.com/wp-content/uploads/2022/08/ekart.webp"
+                        className="h-14"
+                        src="https://png.pngtree.com/template/20210709/ourmid/pngtree-shopping-logo-design-image_545854.jpg"
                         alt="Logo"
                     />
                 </Link>
